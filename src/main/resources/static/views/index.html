@@ -1,0 +1,102 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout.html}">
+
+	<head>
+		<script src="/js/main.js"></script>
+		
+		<style>
+		
+			.leaflet-div-icon{
+				background-image: url(/img/marker.png);
+				background-size: 60px 60px;
+				background-color: transparent;
+				border: none;
+				text-align: center;
+				color: white;
+				margin-top: -55px !important;
+				padding-top: 10px;
+			}
+			
+			#map{
+				height: 600px;
+			}
+			
+			@media (max-width: 767.98px)(){
+				#map{
+					height: 200px;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<div layout:fragment="content" class="px-sm-5 mx-sm-5">
+			<div v-if="loading" class="display-3 text-center mt-5">
+				...Caricamento...
+			</div>
+			<div v-if="!loading">
+				<div class="row align-items-center">
+					<div class="col-sm-10">
+						<h1 class="display-3 d-md-block d-none">Covid 19 - Situazione Italiana</h1>
+					</div>
+					<div class="col-xs-12 col-sm-2 text-center pt-md-0 pt-3">
+						<button v-on:click="$bvModal.show('segnalaCasoModal')" 
+								class="btn btn-warning btn-lg"><i class="fa fa-exclamation-circle"></i> Segnala caso</button>
+					</div>
+				</div>
+				
+				<hr>
+				
+				<div class="row py-md-5 py-2 text-center">
+					<div class="col-sm-4">
+						<h4 class="bg-info p-2 text-white">Totale Positivi</h4>
+						<span class="display-4">{{stats.totaleCasi}}</span>
+					</div>
+					<div class="col-sm-4">
+						<h4 class="bg-success p-2 text-white">Totale Guariti</h4>
+						<span class="display-4">{{stats.totaleGuariti}}</span>
+					</div>
+					<div class="col-sm-4">
+						<h4 class="bg-danger p-2 text-white">Totale Decessi</h4>
+						<span class="display-4">{{stats.totaleDecessi}}</span>
+					</div>
+				</div>
+				
+				
+				<div class="row mb-5">
+					<div class="col px-2 px-md-0">
+						<div id="map"></div>
+					</div>
+				</div>
+			</div>
+			
+			<b-modal id="segnalaCasoModal" title="Segnala Caso" ref="segnalaCasoModal">
+				
+		    	<div class="row">
+		    		<div class="col-8 m-auto">
+			    		<div class="form-group text-center">
+				    		<label>Provincia</label>
+				    		
+				    		<select v-model="provinciaSegnalata" class="form-control">
+				    			<option v-for="p in province" :key="p.sigla" v-bind:value="p.sigla">
+				    			{{p.nome}}
+				    			</option>
+				    		</select>
+				    	</div>
+		    		</div>
+		    	</div>
+		    	
+		    	<template v-slot:modal-footer="{ok, cancel}" class="justify-content-between">
+	    			<button class="btn btn-lg btn-success ml-auto" 
+	    					v-on:click="submitCase('GUARITO')"><i class="fa fa-smile"></i> Guarito</button>
+	    		
+	    			<button class="btn btn-lg btn-danger mr-auto" 
+	    					v-on:click="submitCase('POSITIVO')"><i class="fa fa-frown"></i> Positivo</button>
+		    	</template>
+			</b-modal>	
+		</div>
+		
+		
+		
+	</body>
+</html>

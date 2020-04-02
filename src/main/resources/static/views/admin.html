@@ -1,0 +1,45 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout.html}">
+
+	<head>
+		<script src="/js/admin.js"></script>
+	</head>
+
+	<body>
+		<div layout:fragment="content">
+		
+			<div class="d-flex justify-content-between align-items-center">
+				<h1 class="display-3">Admin</h1>
+				<div >
+					<i class="fa fa-user"></i> <span th:text="${user.nome + ' ' + user.cognome}"/>
+					<br/>
+					<small>Prov. Competenza: <b th:text="${user.provincia}"></b></small>
+				</div>
+			</div>
+			
+			
+			
+			<b-table
+		      id="my-table"
+		      :items="items"
+		      :fields="fields"
+		      :per-page="0"
+		      :current-page="currentPage"
+		      no-local-sorting
+		      @sort-changed="sortChanged"
+		      :sort-by.sync="sortBy"
+      		  :sort-desc.sync="sortDesc"		      
+		      small
+		    ></b-table>
+			
+			<b-pagination
+		      v-model="currentPage"
+		      :total-rows="rows"
+		      :per-page="perPage"
+		      aria-controls="my-table"
+		      @change="loadData"
+		    ></b-pagination>
+		</div>
+		
+	</body>
+</html>
